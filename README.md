@@ -1,13 +1,20 @@
-**FreeCodeCamp**- Information Security and Quality Assurance
-------
+# Personal Library
 
-Project Personal Library
+# What this does
 
-1) ADD YOUR MongoDB connection string to .env without quotes as db
-    `example: DB=mongodb://admin:pass@1234.mlab.com:1234/fccpersonallib`
-2) SET NODE_ENV to `test` without quotes
-3) You need to create all routes within `routes/api.js`
-4) You will add any security features to `server.js`
-5) You will create all of the functional tests in `tests/2_functional-tests.js`
+Add books, check out books, comment on books, and more!
 
+## How to use
 
+* Use the add a book form to add a book. 
+* Click on a book title read comments, add a comment, or delete the book
+
+## Tech Used
+
+- Node.js and Express - Server side scripting
+- MongoDB/MLab - Database
+- Mongoose - Data modeling
+- Helmet - Security, like preventing XSS and MIME sniffing
+- Mocha/Chai - Unit and functional testing
+
+[Click Here to See a Live Demo](https://hissing-gorilla.glitch.me/)
