@@ -1,5 +1,5 @@
-function BookHandler(){
-    
+function CommentHandler(){
+  
   this.getComments = function(req, res){
     console.log(req + res);
   };
@@ -10,4 +10,4 @@ function BookHandler(){
     console.log(req + res);
   };
 }
-module.exports = BookHandler;
+module.exports = CommentHandler;
