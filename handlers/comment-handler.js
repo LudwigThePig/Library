@@ -1,4 +1,4 @@
-function CommentHandler = function(){
+function CommentHandler (){
   
     this.getComments = function(req, res){
       console.log(req + res);
