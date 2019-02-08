@@ -15,7 +15,30 @@ function BookHandler(){
   
   this.addBook = function(req, res){
     const book = req.body.bookTitle.toString();
-    console.log(book);
+    
+    Book.findOne({bookTitle: book}, function(err, response){
+      if (err) { 
+        res.json({message: err});
+      }
+      
+      if (response){ 
+        res.json({message: `${response} already exists`});
+      } else {
+        let newBook = new Book({bookTitle: book});
+        console.log(`line 28`);
+        
+        newBook.save()
+          .then( (data)=>{
+            const json = {
+              message: `${data} has been added to the library`,
+              _id: data.id
+            };
+            res.json(json);
+        });
+      }
+      
+    })
+    .catch( err=> console.dir(`line 41`) );
   };
   
   

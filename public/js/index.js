@@ -17,8 +17,28 @@
         )
     },
     
-    addBook: function(title){
-      console.log(title);
+    addBook: function(bookTitle){
+      
+      const options = {
+        method: 'POST',
+        body: JSON.stringify({bookTitle}),
+        headers: {'Content-Type': 'application/json'}
+      };
+      
+      return fetch(`/api/books`, options)
+        .then(
+          function(response){
+            if (response.status !== 200){
+              console.log(`We could not get in touch with the library. Status: ${response.status}`);
+            } else {
+              response.json()
+            }
+          }
+        )
+        .catch((err)=>{
+          console.log(err);
+        })
+      ;
     },
     
     deleteAllBooks: function(){
