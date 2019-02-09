@@ -6,15 +6,18 @@
     getBooks: function(){
       return fetch('/api/books')
         .then(
-          function(response){
-            if (response.status !== 200){
-              console.log(`We could not get in touch with the library. GET-status: ${response.status}`);
-            } else {
-              console.log('line 13');
-              console.log(response);
-            }
-          }
+          response => response.json()
         )
+        .then( (res)=>{
+          this.list = res.books.map((book) =>{
+            return { 
+              title: book.bookTitle, 
+              comments: book.comments,
+              date: book.dateCreated
+            }
+          })
+        })
+        .catch( err => console.log(err) );
     },
     
     addBook: function(bookTitle){
@@ -24,19 +27,17 @@
         body: JSON.stringify({bookTitle}),
         headers: {'Content-Type': 'application/json'}
       };
+      
       return fetch('/api/books', options)
         .then((response)=>{
-          if(response !== 200){
-            console.log(`We could not connect to the server. Response Status: ${response.status}`)
-          } else {
-            response.json();
-          }
+          return response.json();
         })
         .then((data)=>{
-          console.log(`Line 33 ${data}`);
+        return data;
+          console.log(`Line 36 ${data}`);
         })
         .catch((err)=>{
-          console.log(`line 36 ${err}`);
+          console.log(`line 39 ${err}`);
         })
       ;
     },
@@ -59,7 +60,8 @@
     form.addButton.addEventListener('click', (e)=>{
       e.preventDefault();
       fetchFunc.addBook(form.addForm.value);
-      window.location.reload();
+      // window.location.reload();
+      form.addForm.value = '';
     })
     
     form.deleteAllButton.addEventListener('click', (e)=>{

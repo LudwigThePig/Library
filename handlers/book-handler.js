@@ -1,4 +1,4 @@
-const Book = require('../models/book-model.js');
+const Book = require('../models/book-model');
 
 function BookHandler(){
   
@@ -7,8 +7,8 @@ function BookHandler(){
       if (err) {
         console.log(`Hmm, we could not find any books: ${err}`);
       } else {
-        console.log(books);
-      }
+        res.json({books})
+      }  
     })
   };
   
@@ -18,14 +18,12 @@ function BookHandler(){
     
     Book.findOne({bookTitle: book}, function(err, response){
       if (err) { 
-        res.json({message: err});
+        console.log(err);
       }
-      
       if (response){ 
         res.json({message: `${response} already exists`});
       } else {
         let newBook = new Book({bookTitle: book});
-        console.log(`line 28`);
         
         newBook.save()
           .then( (data)=>{
@@ -38,7 +36,7 @@ function BookHandler(){
       }
       
     })
-    .catch( err=> console.dir(`line 41`) );
+    
   };
   
   
