@@ -4,7 +4,7 @@ const express     = require('express');
 const bodyParser  = require('body-parser');
 const cors        = require('cors');
 const helmet      = require('helmet');
-const MongoClient = require('mongodb');
+const mongoose = require('mongoose');
 
 const apiRoutes  = require('./routes/api.js');
 const fccTestingRoutes  = require('./routes/fcctesting.js');
@@ -20,6 +20,14 @@ app.use(cors({origin: '*'})); //USED FOR FCC TESTING PURPOSES ONLY!
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+mongoose.connect(process.env.MONGO, (err)=>{
+    if (err){
+      console.log(`Ooops, looks like something went wrong: ${err}`);
+    } else {
+      console.log(`You are now connected to the database!`)
+    }
+  });
 
 //Index page (static HTML)
 app.route('/')
@@ -57,12 +65,5 @@ app.listen(process.env.PORT || 3000, function () {
   }
 });
 
-MongoClient.connect(process.env.MONGO, (err)=>{
-    if (err){
-      console.log(`Ooops, looks like something went wrong: ${err}`);
-    } else {
-      console.log(`You are now connected to the database!`)
-    }
-  });
 
 module.exports = app; //for unit/functional testing
