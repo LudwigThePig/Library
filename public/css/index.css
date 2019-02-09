@@ -20,3 +20,14 @@ body{
   height: 90vh;
   color: #fff
 }
+
+#display{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 10px;
+}
+
+.book-container{
+  background: #343434;
+  width: 100%;
+}
