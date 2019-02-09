@@ -2,14 +2,14 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const BookSchema = Schema({
+const BookSchema = new Schema({
   bookTitle: { 
     type: String,
     required: true,
     min: 1,
-    max: 25
+    max: 50
   },
-  comments: Array,
+  comments: [String],
   dateCreated: {
     type: String,
     default: new Date()

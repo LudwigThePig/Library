@@ -8,7 +8,7 @@
         .then(
           function(response){
             if (response.status !== 200){
-              console.log(`We could not get in touch with the library. Status: ${response.status}`);
+              console.log(`We could not get in touch with the library. GET-status: ${response.status}`);
             } else {
               console.log('line 13');
               console.log(response);
@@ -24,19 +24,19 @@
         body: JSON.stringify({bookTitle}),
         headers: {'Content-Type': 'application/json'}
       };
-      
-      return fetch(`/api/books`, options)
-        .then(
-          function(response){
-            if (response.status !== 200){
-              console.log(`We could not get in touch with the library. Status: ${response.status}`);
-            } else {
-              response.json()
-            }
+      return fetch('/api/books', options)
+        .then((response)=>{
+          if(response !== 200){
+            console.log(`We could not connect to the server. Response Status: ${response.status}`)
+          } else {
+            response.json();
           }
-        )
+        })
+        .then((data)=>{
+          console.log(`Line 33 ${data}`);
+        })
         .catch((err)=>{
-          console.log(err);
+          console.log(`line 36 ${err}`);
         })
       ;
     },
