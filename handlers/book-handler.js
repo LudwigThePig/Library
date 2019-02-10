@@ -16,6 +16,10 @@ function BookHandler(){
   this.addBook = function(req, res){
     const book = req.body.bookTitle.toString();
     
+    if (book === ''){
+      res.send('Please enter a book title')
+    }
+    
     Book.findOne({bookTitle: book}, function(err, response){
       if (err) { 
         console.log(err);
@@ -40,8 +44,11 @@ function BookHandler(){
   };
   
   
-  this.deleteBook = function(req, res){
-    console.log(req + res);
+  this.deleteAllBooks = function(req, res){
+    Book.deleteMany({}, function(err, response){
+      if (err){console.log(err)}
+      res.json({response})
+    })
   };
   
   

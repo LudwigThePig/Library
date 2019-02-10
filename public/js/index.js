@@ -35,16 +35,29 @@
         })
         .then((data)=>{
         return data;
-          console.log(`Line 36 ${data}`);
         })
         .catch((err)=>{
-          console.log(`line 39 ${err}`);
-        })
-      ;
+          console.log(err);
+        });
     },
     
     deleteAllBooks: function(){
-      alert('Do you really want to do that?');
+      alert('Okay then...');
+      
+      const options = {
+        method: 'DELETE'
+      }
+      
+      return fetch('/api/books', options)
+        .then((response)=>{
+          return response.json();
+        })
+        .then((data)=>{
+        return data;
+        })
+        .catch((err)=>{
+          console.log(err);
+        })
     }
   };
   
@@ -79,7 +92,7 @@
   const init = ()=>{
     
     fetchFunc.getBooks();
-    setTimeout(function(){renderFunc()}, 500)
+    setTimeout(function(){renderFunc()}, 750)
         
     form.addButton.addEventListener('click', (e)=>{
       e.preventDefault();
@@ -90,6 +103,7 @@
     form.deleteAllButton.addEventListener('click', (e)=>{
       e.preventDefault();
       fetchFunc.deleteAllBooks();
+      window.location.reload();
     })
     
   };
