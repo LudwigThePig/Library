@@ -69,6 +69,9 @@
       const div = document.createElement('div');
       const h3 = document.createElement('h2');
       const p = document.createElement('p');
+      const ul = document.createElement('ul');
+      
+      const comments = commentRender(list[i]);
       
       div.setAttribute('class', 'book-container');
       
@@ -77,11 +80,22 @@
       
       div.appendChild(h3);
       div.appendChild(p);
+      div.appendChild(ul);
       
       document.getElementById('display').appendChild(div);
       
     }
   }
+  
+  const commentRender = (book)=>{
+    let result = [];
+    for (let i = 0; i < book.comments.length; i++){
+      let li = document.createElement('li')
+      li.innerText = book.comments[i];
+      result.push(li);
+    }
+    return result;
+  };
   
   const form = {   
     addButton: document.getElementById('newBook'),
