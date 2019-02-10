@@ -70,17 +70,34 @@
       const h3 = document.createElement('h2');
       const p = document.createElement('p');
       const ul = document.createElement('ul');
+      const formEl = document.createElement('form');
+      const inputField = document.createElement('input');
+      const inputSubmit = document.createElement('input');
+      
       
       const comments = commentRender(list[i]);
       
+      let uniqueId = `${list[i].title}Comment`;
+      
       div.setAttribute('class', 'book-container');
+      formEl.setAttribute('id', uniqueId);
+      inputField.setAttribute('type', 'text');
+      inputField.setAttribute('name', 'comment');
+      inputSubmit.setAttribute('type', 'submit');
       
       h3.innerText = list[i].title;
       p.innerText = `${list[i].comments.length} comments`;
       
+      formEl.appendChild(inputField);
+      formEl.appendChild(inputSubmit);
+      
       div.appendChild(h3);
       div.appendChild(p);
       div.appendChild(ul);
+      // if (comments !== []){
+      //   div.appendChild(comments);
+      // }
+      div.appendChild(formEl);
       
       document.getElementById('display').appendChild(div);
       
