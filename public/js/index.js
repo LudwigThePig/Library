@@ -75,7 +75,18 @@ const fetchFunc = {
       .catch((err)=>{
         console.log(err);
       });
-  }
+  },
+  
+  getComments: function(id){
+    fetch(`/api/books/${id}`)
+      .then(
+        response => response.json()
+      )
+      .then( 
+      data => console.log(data)
+      )
+      .catch( err => console.log(err) );
+}
 };
 
 
@@ -102,7 +113,7 @@ const renderFunc = ()=>{
     //attributes
     div.setAttribute('class', 'book-container');
     let spanList = [addCom, seeCom, hide, deleteBook];
-    spanList.forEach(x => x.setAttribute('class', 'span-list'));
+    spanList.forEach(x => x.setAttribute('class', `span-list ${bookId}`));
     formEl.setAttribute('id', bookId);
     inputField.setAttribute('type', 'text');
     inputField.setAttribute('name', 'commentForm');
@@ -110,10 +121,6 @@ const renderFunc = ()=>{
     inputSubmit.setAttribute('type', 'submit');
     inputSubmit.setAttribute('name', 'commentbutton');
     
-    //event handling
-    formEl.setAttribute('onsubmit', 'commentHandler(this)');
-
-
     h3.innerText = list[i].title;
     p.innerText = `${list[i].comments.length} comments`;
     addCom.innerText = 'add comment'; 
@@ -121,12 +128,22 @@ const renderFunc = ()=>{
     hide.innerText = 'hide'; 
     deleteBook.innerText = 'delete book';
 
+        //event handling
+    formEl.setAttribute('onsubmit', 'commentHandler(this)'); //tried and true way
+    seeCom.addEventListener('click', function(){ //risky clicky
+      fetchFunc.getComments(bookId);
+      
+      console.log(bookId);
+    }) //risky clicky
+    addCom.addEventListener('click', function(){
+      div.appendChild(formEl);
+    })
     formEl.appendChild(inputField);
     formEl.appendChild(inputSubmit);
 
     div.appendChild(h3);
     div.appendChild(p);
-    div.appendChild(formEl);
+    
     spanList.forEach(x => {
       if (x != hide){ div.appendChild(x);
       }});
