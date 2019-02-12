@@ -57,10 +57,11 @@ const fetchFunc = {
         console.log(err);
       });
   },
+  
   addComment: function(id, comment){
     const options = {
       method: 'POST',
-      body: JSON.stringify(comment),
+      body: JSON.stringify({comment}),
       headers: {'Content-Type': 'application/json'}
     }
 
