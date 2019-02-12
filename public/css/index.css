@@ -31,3 +31,14 @@ body{
   background: #343434;
   width: 100%;
 }
+
+.span-list{
+  color: #1DA1F2;
+  margin: 0 6px;
+  font-size: .8em;
+  display: block;
+}
+.span-list:hover{
+  cursor: pointer;
+  color: white;
+}
