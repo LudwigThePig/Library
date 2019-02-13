@@ -123,6 +123,7 @@ const renderFunc = ()=>{
     inputField.setAttribute('ref', 'commentForm');
     inputSubmit.setAttribute('type', 'submit');
     inputSubmit.setAttribute('name', 'commentbutton');
+    inputSubmit.setAttribute('class', 'button');
     
     h3.innerText = list[i].title;
     p.innerText = `${list[i].comments.length} comments`;
@@ -135,20 +136,19 @@ const renderFunc = ()=>{
     seeCom.addEventListener('click', function(){ 
       fetchFunc.getComments(bookId);
       
-      setTimeout(()=>{
-        let temp = commentRender(fetchFunc.listOfComments);
-        
+      setTimeout(()=>{        
         //Prevents duplicates: removes all elements from comment list before adding new comments.
         while (ul.firstChild) {
           ul.removeChild(ul.firstChild);
         }
         
+        let temp = commentRender(fetchFunc.listOfComments);
         temp.forEach((x)=>{
-          console.log(x)
             ul.appendChild(x)
-          // } 
         });
+        
         div.appendChild(ul);
+        div.appendChild(hide);
         }, 1000);
       
     });
@@ -159,8 +159,11 @@ const renderFunc = ()=>{
     });
     
     inputSubmit.addEventListener('click', function(){
-      if (true){
-        fetchFunc.addComment(bookId, inputField.value);
+      const comment = inputField.value;
+      if (comment.length < 120){
+        fetchFunc.addComment(bookId, comment);
+      } else {
+        alert('Comments exceeded the 120 character limit.')
       }
     })
     
@@ -190,7 +193,7 @@ const renderFunc = ()=>{
 const commentRender = (bookArr)=>{
   let result = [];
   for (let i = 0; i < bookArr.length; i++){
-    let li = document.createElement('li')
+    let li = document.createElement('li');
     li.innerText = bookArr[i];
     result.push(li);
   }
@@ -211,8 +214,13 @@ const init = ()=>{
 
   form.addButton.addEventListener('click', (e)=>{
     e.preventDefault();
-    fetchFunc.addBook(form.addForm.value);
-    window.location.reload();
+    const book = form.addForm.value;
+    if ( book.length < 50){
+      fetchFunc.addBook(book);
+      window.location.reload();
+    } else {
+      alert('Book title exceeded the 50 character limit');
+    }
   })
 
   form.deleteAllButton.addEventListener('click', (e)=>{
