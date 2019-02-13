@@ -1,5 +1,6 @@
 const fetchFunc = {
   listOfBooks: [],
+  listOfComments: [],
 
   getBooks: function(){
     return fetch('/api/books')
@@ -83,7 +84,9 @@ const fetchFunc = {
         response => response.json()
       )
       .then( 
-      data => console.log(data)
+      (data) => {
+        this.listOfComments.push(data);
+      }
       )
       .catch( err => console.log(err) );
 }
@@ -106,13 +109,14 @@ const renderFunc = ()=>{
     const inputField = document.createElement('input');
     const inputSubmit = document.createElement('input');
     const hide = document.createElement('span');
-
+    const ul = document.createElement('ul');
+    const li = document.createElement('li');
     const comments = commentRender(list[i]);
     let bookId = list[i].id;
 
     //attributes
     div.setAttribute('class', 'book-container');
-    let spanList = [addCom, seeCom, hide, deleteBook];
+    const spanList = [addCom, seeCom, hide, deleteBook];
     spanList.forEach(x => x.setAttribute('class', `span-list ${bookId}`));
     formEl.setAttribute('id', bookId);
     inputField.setAttribute('type', 'text');
@@ -129,15 +133,26 @@ const renderFunc = ()=>{
     deleteBook.innerText = 'delete book';
 
         //event handling
-    formEl.setAttribute('onsubmit', 'commentHandler(this)'); //tried and true way
     seeCom.addEventListener('click', function(){ //risky clicky
       fetchFunc.getComments(bookId);
+      setTimeout(()=>{console.log(fetchFunc.listOfComments)}, 1000);
       
-      console.log(bookId);
-    }) //risky clicky
+    });
     addCom.addEventListener('click', function(){
       div.appendChild(formEl);
-    })
+      div.appendChild(hide);
+    });
+    
+    
+    //multi-tool remove event listner. Works for multiple cases
+    hide.addEventListener('click', function(){      
+      const tempArr = [formEl, hide, ul]
+        .filter(x => div.contains(x));
+      
+      tempArr.forEach(x => div.removeChild(x));
+    });
+    
+    
     formEl.appendChild(inputField);
     formEl.appendChild(inputSubmit);
 
