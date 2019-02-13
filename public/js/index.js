@@ -84,9 +84,8 @@ const fetchFunc = {
         response => response.json()
       )
       .then( 
-      (data) => {
-        this.listOfComments.push(data);
-      }
+      data => this.listOfComments = data
+      
       )
       .catch( err => console.log(err) );
 }
@@ -133,22 +132,42 @@ const renderFunc = ()=>{
     deleteBook.innerText = 'delete book';
 
         //event handling
-    seeCom.addEventListener('click', function(){ //risky clicky
+    seeCom.addEventListener('click', function(){ 
       fetchFunc.getComments(bookId);
-      setTimeout(()=>{console.log(fetchFunc.listOfComments)}, 1000);
+      
+      setTimeout(()=>{
+        let temp = commentRender(fetchFunc.listOfComments);
+        
+        //Prevents duplicates: removes all elements from comment list before adding new comments.
+        while (ul.firstChild) {
+          ul.removeChild(ul.firstChild);
+        }
+        
+        temp.forEach((x)=>{
+          console.log(x)
+            ul.appendChild(x)
+          // } 
+        });
+        div.appendChild(ul);
+        }, 1000);
       
     });
+    
     addCom.addEventListener('click', function(){
       div.appendChild(formEl);
       div.appendChild(hide);
     });
     
+    inputSubmit.addEventListener('click', function(){
+      if (true){
+        fetchFunc.addComment(bookId, inputField.value);
+      }
+    })
     
     //multi-tool remove event listner. Works for multiple cases
     hide.addEventListener('click', function(){      
       const tempArr = [formEl, hide, ul]
         .filter(x => div.contains(x));
-      
       tempArr.forEach(x => div.removeChild(x));
     });
     
@@ -168,21 +187,16 @@ const renderFunc = ()=>{
   }
 }
 
-const commentRender = (book)=>{
+const commentRender = (bookArr)=>{
   let result = [];
-  for (let i = 0; i < book.comments.length; i++){
+  for (let i = 0; i < bookArr.length; i++){
     let li = document.createElement('li')
-    li.innerText = book.comments[i];
+    li.innerText = bookArr[i];
     result.push(li);
   }
   return result;
 };
 
-function commentHandler(id){
-  const comment = id.childNodes[0].value;
-  const bookId = id.id;
-  fetchFunc.addComment(bookId, comment)
-}
 
 const form = {   
   addButton: document.getElementById('newBook'),
