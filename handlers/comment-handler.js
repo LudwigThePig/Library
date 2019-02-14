@@ -3,10 +3,9 @@ const Book = require('../models/book-model');
 function CommentHandler(){
   
   this.getComments = function(req, res){
-    console.log(req)
     const id = req.params.id;
     Book.findById(id, function(err, book){
-      if (err) {console.log(err)}
+      if (err) {console.log(err);}
       res.send(book.comments);
     })
   };
@@ -16,11 +15,16 @@ function CommentHandler(){
     
     Book.findOneAndUpdate({_id: id}, {$push: {comments: comment}}, function(err, response){
       if (err){console.log(err)}
-      res.json({response})
+      res.json({response});
     })
   };
   this.deleteBook = function(req, res){
-    console.log(req + res);
+    const id = req.params.id;
+    
+    Book.remove({_id: id}, function(err, response){
+      if (err) {console.log(err);}
+      res.json({response});
+    })
   };
 }
 module.exports = CommentHandler;

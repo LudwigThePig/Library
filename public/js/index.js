@@ -59,6 +59,22 @@ const fetchFunc = {
       });
   },
   
+  deleteBook: function(id){
+    const options = {
+      method: 'DELETE'
+    };
+    fetch(`/api/books/${id}`, options)
+      .then((response)=>{
+        return response.json();
+      })
+      .then((data)=>{
+      return data;
+      })
+      .catch((err)=>{
+        console.log(err);
+      });
+  },
+  
   addComment: function(id, comment){
     const options = {
       method: 'POST',
@@ -149,14 +165,18 @@ const renderFunc = ()=>{
         
         div.appendChild(ul);
         div.appendChild(hide);
-        }, 1000);
-      
+        }, 1000); 
     });
     
     addCom.addEventListener('click', function(){
       div.appendChild(formEl);
       div.appendChild(hide);
     });
+    
+    deleteBook.addEventListener('click', function(){
+      fetchFunc.deleteBook(bookId);
+      window.location.reload();
+    })
     
     inputSubmit.addEventListener('click', function(){
       const comment = inputField.value;
