@@ -37,11 +37,24 @@ suite('Functional Tests', function() {
 
   suite('Routing tests', function() {
 
-
     suite('POST /api/books with title => create book object/expect book object', function() {
       
       test('Test POST /api/books with title', function(done) {
-        //done();
+        chai.request(server)
+          .post('/api/books')
+          .send({bookTitle: 'test'})
+          .end(function(err, res){
+            assert.equal(res.status, 200);
+            assert.property(res.body, 'bookTitle');
+            assert.property(res.body, 'comments');
+            assert.property(res.body, 'dateCreated');
+            assert.property(res.body, '_id');
+            assert.isString(res.body.bookTitle, 'Book should be a string');
+            assert.isArray(res.body.comments, 'Comments should be stored in an array');
+            assert.equal(res.body.bookTitle, 'test');
+            done();
+
+        })
       });
       
       test('Test POST /api/books with no title given', function(done) {
