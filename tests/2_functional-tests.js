@@ -6,10 +6,12 @@
 *       
 */
 
-var chaiHttp = require('chai-http');
-var chai = require('chai');
-var assert = chai.assert;
-var server = require('../server');
+const chaiHttp = require('chai-http');
+const chai = require('chai');
+const assert = chai.assert;
+const server = require('../server');
+
+const validId = '5c64f972c2d437006882ed47';
 
 chai.use(chaiHttp);
 
@@ -31,6 +33,7 @@ suite('Functional Tests', function() {
         done();
       });
   });
+})
   /*
   * ----[END of EXAMPLE TEST]----
   */
@@ -53,12 +56,18 @@ suite('Functional Tests', function() {
             assert.isArray(res.body.comments, 'Comments should be stored in an array');
             assert.equal(res.body.bookTitle, 'test');
             done();
-
         })
       });
       
       test('Test POST /api/books with no title given', function(done) {
-        //done();
+        chai.request(server)
+          .post('/api/books')
+          .send({bookTitle: ''})
+          .end(function(err, res){
+            assert.equal(res.status, 200);
+            assert.equal(res.message, 'Please enter a book title');
+            done();
+          })
       });
       
     });
@@ -67,7 +76,17 @@ suite('Functional Tests', function() {
     suite('GET /api/books => array of books', function(){
       
       test('Test GET /api/books',  function(done){
-        //done();
+        chai.request(server)
+          .get('/api/books')
+          .end(function(err, res){
+            assert.equal(res.status, 200);
+            assert.isArray(res.body);
+            assert.property(res.body[0], 'bookTitle');
+            assert.property(res.body[0], 'comments');
+            assert.property(res.body[0], 'dateCreated');
+            assert.property(res.body[0], '_id');
+            done();
+          })
       });      
       
     });
@@ -76,12 +95,25 @@ suite('Functional Tests', function() {
     suite('GET /api/books/[id] => book object with [id]', function(){
       
       test('Test GET /api/books/[id] with id not in db',  function(done){
-        //done();
+        chai.request(server)
+          .get('/api/books/asdf')
+          .end(function(err, res){
+            assert.equal(res.status, 200);
+            assert.equal(res.message, 'Not a valid id');
+            done();
+          });
+      
       });
       
       test('Test GET /api/books/[id] with valid id in db',  function(done){
-        //done();
-      });
+        chai.request(server)
+          .get(`/api/books/${validId}`)
+          .end(function(err, res){
+            assert.equal(res.status, 200);
+            assert.isArray(res.comments, 'Hey, it is an array!');
+            assert.property(res, 'comments');
+            done();
+          });
       
     });
 
@@ -89,11 +121,22 @@ suite('Functional Tests', function() {
     suite('POST /api/books/[id] => add comment/expect book object with id', function(){
       
       test('Test POST /api/books/[id] with comment', function(done){
-        //done();
+        chai.request(server)
+          .post(`/api/books/${validId}`)
+          .send({comment: 'test'})
+          .end(function(err, res){
+            assert.equal(res.status, 200);
+            assert.property(res.body, 'comment');
+            assert.propert(res.body, '_id')
+            assert.equal(res.body.comment, 'test');
+            assert.equal(res.body._id, validId);
+            done();
+          })
       });
       
     });
 
   });
 
-});
+})
+//})
