@@ -27,12 +27,15 @@ const fetchFunc = {
       body: JSON.stringify({bookTitle}),
       headers: {'Content-Type': 'application/json'}
     };
-
+    
     return fetch('/api/books', options)
       .then((response)=>{
         return response.json();
       })
       .then((data)=>{
+      if(data.message){
+        alert(data.message);
+      }
       return data;
       })
       .catch((err)=>{
@@ -87,6 +90,9 @@ const fetchFunc = {
         return response.json();
       })
       .then((data)=>{
+      if(data.message){
+        alert(data.message);
+      }
       return data;
       })
       .catch((err)=>{

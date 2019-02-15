@@ -16,31 +16,31 @@ function BookHandler(){
   this.addBook = function(req, res){
     const book = req.body.bookTitle.toString();
     
-    if (book === ''){
-      res.send('Please enter a book title')
+    if (book == ''){
+      res.json({message: 'Please enter a book title'});
+      return;
+    } else {
+      Book.findOne({bookTitle: book}, function(err, response){
+        if (err) { 
+          console.log(err);
+        }
+        if (response){ 
+          res.json({message: `${response} already exists`});
+        } else {
+          let newBook = new Book({bookTitle: book});
+
+          newBook.save()
+            .then( (data)=>{
+              const json = {
+                message: `${data} has been added to the library`,
+                _id: data.id
+              };
+              res.json(json);
+          });
+        }
+
+      })
     }
-    
-    Book.findOne({bookTitle: book}, function(err, response){
-      if (err) { 
-        console.log(err);
-      }
-      if (response){ 
-        res.json({message: `${response} already exists`});
-      } else {
-        let newBook = new Book({bookTitle: book});
-        
-        newBook.save()
-          .then( (data)=>{
-            const json = {
-              message: `${data} has been added to the library`,
-              _id: data.id
-            };
-            res.json(json);
-        });
-      }
-      
-    })
-    
   };
   
   

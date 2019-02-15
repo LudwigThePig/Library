@@ -13,10 +13,15 @@ function CommentHandler(){
     const comment = req.body.comment;
     const id = req.params.id;
     
-    Book.findOneAndUpdate({_id: id}, {$push: {comments: comment}}, function(err, response){
-      if (err){console.log(err)}
-      res.json({response});
-    })
+    if (comment == ''){
+      res.json({message: 'Please enter a comment'});
+      return;
+    } else {
+      Book.findOneAndUpdate({_id: id}, {$push: {comments: comment}}, function(err, response){
+        if (err){console.log(err)}
+        res.json({response});
+      })
+    }
   };
   this.deleteBook = function(req, res){
     const id = req.params.id;
