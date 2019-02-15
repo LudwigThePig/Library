@@ -5,8 +5,14 @@ function CommentHandler(){
   this.getComments = function(req, res){
     const id = req.params.id;
     Book.findById(id, function(err, book){
-      if (err) {console.log(err);}
-      res.send(book.comments);
+      if (err) {
+        if (err.name === 'CastError'){
+          res.json({message: 'Not a valid id'});
+        } else {
+          console.log(err);
+        }
+      }
+      res.json({comments: book.comments});
     })
   };
   this.addComment = function(req, res){

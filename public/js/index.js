@@ -90,7 +90,7 @@ const fetchFunc = {
         return response.json();
       })
       .then((data)=>{
-      if(data.message){
+        if(data.message){
         alert(data.message);
       }
       return data;
@@ -106,8 +106,7 @@ const fetchFunc = {
         response => response.json()
       )
       .then( 
-      data => this.listOfComments = data
-      
+      data => this.listOfComments = data.comments
       )
       .catch( err => console.log(err) );
 }
